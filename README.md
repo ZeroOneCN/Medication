@@ -1,4 +1,4 @@
-# 药品记录管理系统
+# 用药记录管理
 
 一个用于记录每日用药情况的 Web 应用。
 
@@ -91,33 +91,6 @@ server {
 }
 ```
 
-## GitHub 仓库设置
-
-1. 初始化 Git 仓库：
-```bash
-git init
-```
-
-2. 创建 .gitignore 文件：
-```
-node_modules/
-dist/
-.env
-.DS_Store
-```
-
-3. 添加远程仓库：
-```bash
-git remote add origin https://github.com/your-username/medication-tracker.git
-```
-
-4. 提交代码：
-```bash
-git add .
-git commit -m "Initial commit"
-git push -u origin main
-```
-
 ## 使用说明
 
 1. 启动后端服务（默认端口 3001）
@@ -143,15 +116,3 @@ DB_USER=your_db_user
 DB_PASSWORD=your_db_password
 DB_NAME=medication_db
 ```
-
-## 贡献指南
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
-
-## 许可证
-
-MIT License 
