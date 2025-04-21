@@ -1,0 +1,157 @@
+# 药品记录管理系统
+
+一个用于记录每日用药情况的 Web 应用。
+
+## 功能特点
+
+- 记录每日用药情况（早餐、午餐、晚餐）
+- 支持添加、编辑、删除记录
+- 支持导出数据为 CSV 格式
+- 支持导入 CSV 数据
+- 支持按日期、药品名称、用量范围筛选数据
+- 提供用药统计功能（今日、本周、本月）
+- 提供用药趋势图表
+- 响应式设计，适配移动端
+
+## 技术栈
+
+### 前端
+- Vue 3
+- Ant Design Vue
+- Vite
+- Pinia
+- Axios
+- Dayjs (日期处理)
+- ECharts (图表展示)
+
+### 后端
+- Node.js
+- Express
+- MySQL
+
+## 开发环境设置
+
+### 前端
+```bash
+cd Medication
+npm install
+npm run dev
+```
+
+### 后端
+```bash
+cd Medication/server
+npm install
+npm run dev
+```
+
+### 数据库
+1. 确保 MySQL 服务已启动
+2. 执行 `server/config/init.sql` 脚本创建数据库和表
+
+## 部署说明
+
+### 前端部署
+1. 构建生产环境代码：
+```bash
+cd Medication
+npm run build
+```
+
+2. 将 `dist` 目录下的文件部署到 Web 服务器（如 Nginx）
+
+### 后端部署
+1. 安装 PM2 进程管理工具：
+```bash
+npm install -g pm2
+```
+
+2. 启动后端服务：
+```bash
+cd Medication/server
+pm2 start server.js --name medication-server
+```
+
+3. 配置 Nginx 反向代理（可选）：
+```nginx
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    location / {
+        root /path/to/your/dist;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## GitHub 仓库设置
+
+1. 初始化 Git 仓库：
+```bash
+git init
+```
+
+2. 创建 .gitignore 文件：
+```
+node_modules/
+dist/
+.env
+.DS_Store
+```
+
+3. 添加远程仓库：
+```bash
+git remote add origin https://github.com/your-username/medication-tracker.git
+```
+
+4. 提交代码：
+```bash
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+```
+
+## 使用说明
+
+1. 启动后端服务（默认端口 3001）
+2. 启动前端开发服务器（默认端口 3000）
+3. 访问 http://localhost:3000 使用应用
+
+## 数据导入模板
+
+CSV 文件应包含以下列：
+- date (日期，格式：YYYY-MM-DD)
+- medicineName (药品名称)
+- breakfast (早餐用量)
+- lunch (午餐用量)
+- dinner (晚餐用量)
+
+## 环境变量配置
+
+创建 `.env` 文件：
+```
+VITE_API_BASE_URL=http://localhost:3001
+DB_HOST=localhost
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_NAME=medication_db
+```
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
+
+## 许可证
+
+MIT License 
