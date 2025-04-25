@@ -117,12 +117,6 @@ CSV 文件应包含以下列：
 - lunch (午餐用量)
 - dinner (晚餐用量)
 
-## 前端环境变量配置
-
-创建 `.env` 文件：
-```
-VITE_API_BASE_URL=http://localhost:3001
-```
 
 ## 项目结构
 ```
