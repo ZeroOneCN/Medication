@@ -47,9 +47,18 @@ npm install
 npm run dev
 ```
 
-### 数据库
+### 数据库配置
 1. 确保 MySQL 服务已启动
-2. 执行 `server/config/init.sql` 脚本创建数据库和表
+2. 修改 `server/config/db.js` 文件中的数据库配置：
+```javascript
+const dbConfig = {
+  host: 'localhost',     // 数据库主机地址
+  user: 'your_db_user',  // 数据库用户名
+  password: 'your_db_password', // 数据库密码
+  database: 'medication_db'     // 数据库名称
+}
+```
+3. 执行 `server/config/init.sql` 脚本创建数据库和表
 
 ## 部署说明
 
@@ -108,13 +117,27 @@ CSV 文件应包含以下列：
 - lunch (午餐用量)
 - dinner (晚餐用量)
 
-## 环境变量配置
+## 前端环境变量配置
 
 创建 `.env` 文件：
 ```
 VITE_API_BASE_URL=http://localhost:3001
-DB_HOST=localhost
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_NAME=medication_db
+```
+
+## 项目结构
+```
+Medication/
+├── src/                    # 前端源代码
+│   ├── components/         # Vue 组件
+│   ├── views/             # 页面视图
+│   ├── api/               # API 接口
+│   ├── store/             # Pinia 状态管理
+│   └── App.vue            # 根组件
+├── server/                 # 后端源代码
+│   ├── config/            # 配置文件
+│   │   ├── db.js          # 数据库配置
+│   │   └── init.sql       # 数据库初始化脚本
+│   ├── routes/            # 路由处理
+│   └── server.js          # 服务器入口
+└── README.md              # 项目文档
 ```
