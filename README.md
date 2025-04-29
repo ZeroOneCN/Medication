@@ -2,7 +2,7 @@
 
 一个用于记录每日用药情况的 Web 应用。
 
-![这是图片](Scan.png "Scan")
+![这是图片](https://image-0620.oss-cn-shenzhen.aliyuncs.com/images/2025/04/08/Scan.png "Scan")
 
 ## 功能特点
 
@@ -18,6 +18,7 @@
 ## 技术栈
 
 ### 前端
+
 - Vue 3
 - Ant Design Vue
 - Vite
@@ -27,6 +28,7 @@
 - ECharts (图表展示)
 
 ### 后端
+
 - Node.js
 - Express
 - MySQL
@@ -34,6 +36,7 @@
 ## 开发环境设置
 
 ### 前端
+
 ```bash
 cd Medication
 npm install
@@ -41,6 +44,7 @@ npm run dev
 ```
 
 ### 后端
+
 ```bash
 cd Medication/server
 npm install
@@ -48,59 +52,67 @@ npm run dev
 ```
 
 ### 数据库配置
+
 1. 确保 MySQL 服务已启动
 2. 修改 `server/config/db.js` 文件中的数据库配置：
-```javascript
-const dbConfig = {
-  host: 'localhost',     // 数据库主机地址
-  user: 'your_db_user',  // 数据库用户名
-  password: 'your_db_password', // 数据库密码
-  database: 'medication_db'     // 数据库名称
-}
-```
+   
+   ```javascript
+   const dbConfig = {
+   host: 'localhost',     // 数据库主机地址
+   user: 'your_db_user',  // 数据库用户名
+   password: 'your_db_password', // 数据库密码
+   database: 'medication_db'     // 数据库名称
+   }
+   ```
 3. 执行 `server/config/init.sql` 脚本创建数据库和表
 
 ## 部署说明
 
 ### 前端部署
+
 1. 构建生产环境代码：
-```bash
-cd Medication
-npm run build
-```
+   
+   ```bash
+   cd Medication
+   npm run build
+   ```
 
 2. 将 `dist` 目录下的文件部署到 Web 服务器（如 Nginx）
 
 ### 后端部署
+
 1. 安装 PM2 进程管理工具：
-```bash
-npm install -g pm2
-```
+   
+   ```bash
+   npm install -g pm2
+   ```
 
 2. 启动后端服务：
-```bash
-cd Medication/server
-pm2 start server.js --name medication-server
-```
+   
+   ```bash
+   cd Medication/server
+   pm2 start server.js --name medication-server
+   ```
 
 3. 配置 Nginx 反向代理（可选）：
-```nginx
-server {
+   
+   ```nginx
+   server {
     listen 80;
     server_name your_domain.com;
-
+   
     location / {
         root /path/to/your/dist;
         try_files $uri $uri/ /index.html;
     }
-
+   
     location /api {
         proxy_pass http://localhost:3001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
-}
-```
+   }
+   ```
 
 ## 使用说明
 
@@ -111,14 +123,15 @@ server {
 ## 数据导入模板
 
 CSV 文件应包含以下列：
+
 - date (日期，格式：YYYY-MM-DD)
 - medicineName (药品名称)
 - breakfast (早餐用量)
 - lunch (午餐用量)
 - dinner (晚餐用量)
 
-
 ## 项目结构
+
 ```
 Medication/
 ├── src/                    # 前端源代码
