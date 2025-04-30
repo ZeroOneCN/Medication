@@ -2,7 +2,7 @@
 
 一个用于记录每日用药情况的 Web 应用。
 
-![药品记录管理](image\药品记录管理.png "药品记录管理")
+![药品记录管理](https://github.com/ZeroOneCN/Medication/blob/main/image/%E8%8D%AF%E5%93%81%E8%AE%B0%E5%BD%95%E7%AE%A1%E7%90%86.png "药品记录管理")
 
 ## 功能特点
 
