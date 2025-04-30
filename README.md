@@ -2,7 +2,7 @@
 
 一个用于记录每日用药情况的 Web 应用。
 
-![这是图片](https://image-0620.oss-cn-shenzhen.aliyuncs.com/images/2025/04/08/Scan.png "Scan")
+![药品记录管理](image\药品记录管理.png "药品记录管理")
 
 ## 功能特点
 
@@ -54,6 +54,7 @@ npm run dev
 ### 数据库配置
 
 1. 确保 MySQL 服务已启动
+
 2. 修改 `server/config/db.js` 文件中的数据库配置：
    
    ```javascript
@@ -64,6 +65,7 @@ npm run dev
    database: 'medication_db'     // 数据库名称
    }
    ```
+
 3. 执行 `server/config/init.sql` 脚本创建数据库和表
 
 ## 部署说明
