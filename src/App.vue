@@ -1,6 +1,10 @@
 <template>
   <a-config-provider :locale="zhCN">
-    <router-view></router-view>
+    <a-layout class="layout">
+      <a-layout-content class="content">
+        <router-view></router-view>
+      </a-layout-content>
+    </a-layout>
   </a-config-provider>
 </template>
 
@@ -13,9 +17,26 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  max-width: 750px;
+  min-height: 100vh;
+}
+
+.layout {
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.content {
+  padding: 24px 50px;
+  min-height: 280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .content {
+    padding: 16px 20px;
+  }
 }
 </style> 
