@@ -13,7 +13,8 @@
 - 支持按日期、药品名称、用量范围筛选数据
 - 提供用药统计功能（今日、本周、本月）
 - 提供用药趋势图表
-- 响应式设计，适配移动端
+- 简洁的单页面设计
+- 响应式布局，适配移动端
 
 ## 技术栈
 
@@ -49,6 +50,13 @@ npm run dev
 cd Medication/server
 npm install
 npm run dev
+```
+
+### 一键启动
+
+```bash
+cd Medication
+npm start
 ```
 
 ### 数据库配置
@@ -139,8 +147,13 @@ Medication/
 ├── src/                    # 前端源代码
 │   ├── components/         # Vue 组件
 │   ├── views/             # 页面视图
+│   │   ├── HomeView.vue    # 首页
+│   │   ├── RecordView.vue  # 用药记录页面
+│   │   ├── AnalysisView.vue# 数据分析页面
+│   │   └── SettingsView.vue# 设置页面
 │   ├── api/               # API 接口
 │   ├── store/             # Pinia 状态管理
+│   ├── router/            # 路由配置
 │   └── App.vue            # 根组件
 ├── server/                 # 后端源代码
 │   ├── config/            # 配置文件
