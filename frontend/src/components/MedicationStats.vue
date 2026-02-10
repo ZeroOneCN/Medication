@@ -62,61 +62,69 @@ const props = defineProps({
 
 const todayStats = computed(() => {
   const today = dayjs().format('YYYY-MM-DD')
-  const todayData = props.data.find(item => dayjs(item.date).format('YYYY-MM-DD') === today) || {
-    breakfast: 0,
-    lunch: 0,
-    dinner: 0
-  }
+  const todayData = props.data.filter(item => dayjs(item.date).format('YYYY-MM-DD') === today)
   
   return {
-    total: todayData.breakfast + todayData.lunch + todayData.dinner,
-    breakfast: todayData.breakfast,
-    lunch: todayData.lunch,
-    dinner: todayData.dinner
+    total: todayData.reduce((sum, item) => sum + item.breakfast + item.lunch + item.dinner, 0),
+    breakfast: todayData.reduce((sum, item) => sum + item.breakfast, 0),
+    lunch: todayData.reduce((sum, item) => sum + item.lunch, 0),
+    dinner: todayData.reduce((sum, item) => sum + item.dinner, 0)
   }
 })
 
 const weekStats = computed(() => {
-  const weekStart = dayjs().startOf('week')
-  const weekEnd = dayjs().endOf('week')
-  const weekData = props.data.filter(item => {
-    const date = dayjs(item.date)
-    return date.isAfter(weekStart) && date.isBefore(weekEnd)
+  const weekStart = dayjs().day(0).startOf('day')
+  const weekEndExclusive = weekStart.add(7, 'day')
+
+  const totalsByDate = new Map()
+  for (const item of props.data) {
+    const date = dayjs(item.date).startOf('day')
+    if (date.isBefore(weekStart) || !date.isBefore(weekEndExclusive)) continue
+
+    const dateKey = date.format('YYYY-MM-DD')
+    const currentTotal = totalsByDate.get(dateKey) || 0
+    totalsByDate.set(dateKey, currentTotal + item.breakfast + item.lunch + item.dinner)
+  }
+
+  const dailyTotals = Array.from({ length: 7 }, (_, index) => {
+    const dateKey = weekStart.add(index, 'day').format('YYYY-MM-DD')
+    return totalsByDate.get(dateKey) || 0
   })
 
-  const dailyTotals = weekData.map(item => 
-    item.breakfast + item.lunch + item.dinner
-  )
-
   const total = dailyTotals.reduce((a, b) => a + b, 0)
-  const daysCount = weekData.length || 1 // 避免除以0
+  const daysWithRecords = totalsByDate.size
+  const dailyTotalsForExtremes = daysWithRecords ? Array.from(totalsByDate.values()) : [0]
 
   return {
     total,
-    average: Math.round(total / daysCount),
-    max: dailyTotals.length ? Math.max(...dailyTotals) : 0,
-    min: dailyTotals.length ? Math.min(...dailyTotals) : 0
+    average: daysWithRecords ? Math.round(total / daysWithRecords) : 0,
+    max: Math.max(...dailyTotalsForExtremes),
+    min: Math.min(...dailyTotalsForExtremes)
   }
 })
 
 const monthStats = computed(() => {
   const monthStart = dayjs().startOf('month')
-  const monthEnd = dayjs().endOf('month')
-  const monthData = props.data.filter(item => {
-    const date = dayjs(item.date)
-    return date.isAfter(monthStart) && date.isBefore(monthEnd)
-  })
+  const monthEndExclusive = monthStart.add(1, 'month')
 
-  const dailyTotals = monthData.map(item => 
-    item.breakfast + item.lunch + item.dinner
-  )
+  const totalsByDate = new Map()
+  for (const item of props.data) {
+    const date = dayjs(item.date).startOf('day')
+    if (date.isBefore(monthStart) || !date.isBefore(monthEndExclusive)) continue
+
+    const dateKey = date.format('YYYY-MM-DD')
+    const currentTotal = totalsByDate.get(dateKey) || 0
+    totalsByDate.set(dateKey, currentTotal + item.breakfast + item.lunch + item.dinner)
+  }
+
+  const dailyTotals = Array.from(totalsByDate.values())
 
   const total = dailyTotals.reduce((a, b) => a + b, 0)
-  const daysCount = monthData.length || 1 // 避免除以0
+  const daysWithRecords = totalsByDate.size
 
   return {
     total,
-    average: Math.round(total / daysCount),
+    average: daysWithRecords ? Math.round(total / daysWithRecords) : 0,
     max: dailyTotals.length ? Math.max(...dailyTotals) : 0,
     min: dailyTotals.length ? Math.min(...dailyTotals) : 0
   }

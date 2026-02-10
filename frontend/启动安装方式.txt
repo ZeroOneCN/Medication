@@ -1,0 +1,12 @@
+后端服务9500
+后端安装
+cd server
+npm install
+后端启动
+cd server
+npm run dev
+
+前端服务9000
+前端安装
+npm install
+npm run dev

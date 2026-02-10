@@ -1,43 +1,56 @@
-# Dependencies
 node_modules/
-.pnp
-.pnp.js
-
-# Production
-dist/
-build/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+yarn.lock
+package-lock.json
+.env
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+# 忽略 uploads/images 目录下的所有文件
+uploads/images/*
+!uploads/images/.gitkeep
+# VS Code
+.vscode/
+*.code-workspace
 
-# Testing
-coverage/
+# IntelliJ
+.idea/
+*.iml
+*.iws
 
-# Server
-server/node_modules/
-server/logs/
-server/.env 
+# Eclipse
+.settings/
+.project
+.classpath
+# 忽略所有 .log 文件
+*.log
+
+# 忽略特定文件
+secret.key
+config.local.json
+
+# 忽略整个目录
+node_modules/
+dist/
+build/
+*.dSYM/
+
+# 但保留目录中的 .gitkeep 文件
+!node_modules/.gitkeep
+
+# 忽略所有 .tmp 文件，但 logs/ 目录下的除外
+*.tmp
+!logs/*.tmp
+
+# 忽略特定扩展名
+*.zip
+*.tar.gz
+
+# 忽略特定路径的文件
+debug/error.log

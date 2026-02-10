@@ -6,11 +6,11 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import dayjs from 'dayjs'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { LineChart } from 'echarts/charts'
 import {
-  TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent
@@ -20,7 +20,6 @@ import VChart from 'vue-echarts'
 use([
   CanvasRenderer,
   LineChart,
-  TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent
@@ -34,15 +33,6 @@ const props = defineProps({
 })
 
 const option = ref({
-  title: {
-    text: '药品用量趋势',
-    left: 'center',
-    textStyle: {
-      color: '#262626',
-      fontSize: 16,
-      fontWeight: 'normal'
-    }
-  },
   tooltip: {
     trigger: 'axis',
     formatter: function(params) {
@@ -55,15 +45,17 @@ const option = ref({
   },
   legend: {
     data: ['早餐', '午餐', '晚餐'],
-    bottom: 0,
+    top: 0,
+    left: 0,
     textStyle: {
       color: '#595959'
     }
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '15%',
+    left: 12,
+    right: 12,
+    top: 44,
+    bottom: 24,
     containLabel: true
   },
   xAxis: {
@@ -153,7 +145,7 @@ const updateChart = (data) => {
 
   // 更新x轴数据
   option.value.xAxis.data = sortedData.map(item => 
-    new Date(item.date).toLocaleDateString()
+    dayjs(item.date).format('MM-DD')
   )
 
   // 更新系列数据
@@ -170,8 +162,7 @@ watch(() => props.data, (newData) => {
 <style scoped>
 .chart-container {
   width: 100%;
-  height: 400px;
-  background: #fff;
+  height: 360px;
 }
 
 .chart {

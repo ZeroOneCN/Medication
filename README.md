@@ -2,164 +2,127 @@
 
 一个用于记录每日用药情况的 Web 应用。
 
-![药品记录管理](https://github.com/ZeroOneCN/Medication/blob/main/image/%E8%8D%AF%E5%93%81%E8%AE%B0%E5%BD%95%E7%AE%A1%E7%90%86.png "药品记录管理")
+![用药记录管理](images/项目截图1.png "用药记录管理")
+![用药记录管理](images/项目截图2.png "用药记录管理")
 
 ## 功能特点
 
 - 记录每日用药情况（早餐、午餐、晚餐）
 - 支持添加、编辑、删除记录
+- 添加记录支持“确定后继续添加”的快速录入
 - 支持导出数据为 CSV 格式
-- 支持导入 CSV 数据
+- 支持导入 Excel/CSV 数据
 - 支持按日期、药品名称、用量范围筛选数据
 - 提供用药统计功能（今日、本周、本月）
 - 提供用药趋势图表
-- 简洁的单页面设计
 - 响应式布局，适配移动端
 
 ## 技术栈
 
 ### 前端
-
-- Vue 3
+- Vue 3 + Vite
 - Ant Design Vue
-- Vite
-- Pinia
-- Axios
-- Dayjs (日期处理)
-- ECharts (图表展示)
+- Pinia + Axios
+- Dayjs + ECharts
+- PapaParse + XLSX
 
 ### 后端
+- Node.js + Express
+- MySQL2
+- CORS + Dotenv
 
-- Node.js
-- Express
-- MySQL
+## 目录结构
 
-## 开发环境设置
+- frontend：前端代码
+- backend：后端代码
+- backend/config/init.sql：数据库初始化脚本
 
-### 前端
+## 开发环境配置
+
+## 环境要求
+
+- Node.js（建议 18+）
+- MySQL（建议 5.7/8.0）
+
+## 安装依赖
+
+在两个目录分别安装依赖：
 
 ```bash
-cd Medication
-npm install
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+## 启动开发服务器
+
+需要两个终端分别启动后端与前端。
+
+1. 启动后端（默认端口 9500）：
+
+```bash
+cd backend
 npm run dev
 ```
 
-### 后端
+2. 启动前端（默认端口 9000）：
 
 ```bash
-cd Medication/server
-npm install
+cd ../frontend
 npm run dev
 ```
 
-### 一键启动
-
-```bash
-cd Medication
-npm start
-```
-
-### 数据库配置
+## 数据库配置
 
 1. 确保 MySQL 服务已启动
+2. 复制.env.example为.env：
+```bash
+cp backend/.env.example backend/.env
+```
 
-2. 修改 `server/config/db.js` 文件中的数据库配置：
-   
-   ```javascript
-   const dbConfig = {
-   host: 'localhost',     // 数据库主机地址
-   user: 'your_db_user',  // 数据库用户名
-   password: 'your_db_password', // 数据库密码
-   database: 'medication_db'     // 数据库名称
-   }
-   ```
+Windows PowerShell 也可以使用：
+```bash
+Copy-Item backend/.env.example backend/.env
+```
 
-3. 执行 `server/config/init.sql` 脚本创建数据库和表
+3. 配置数据库连接（.env）：
+```bash
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_NAME=medication_db
+```
 
-## 部署说明
+后端启动时会自动创建数据库并执行 [init.sql](backend/config/init.sql) 初始化表结构。
 
-### 前端部署
+## 端口与代理
 
-1. 构建生产环境代码：
-   
-   ```bash
-   cd Medication
-   npm run build
-   ```
+- 前端：默认 http://localhost:9000
+- 后端：默认 http://localhost:9500
+- 开发代理：前端请求 /api 会代理到后端（见 frontend/vite.config.js）
 
-2. 将 `dist` 目录下的文件部署到 Web 服务器（如 Nginx）
+## 接口说明
 
-### 后端部署
+- GET /api/records：获取记录列表
+- POST /api/records：新增记录
+- PUT /api/records/:id：更新记录
+- DELETE /api/records/:id：删除记录
 
-1. 安装 PM2 进程管理工具：
-   
-   ```bash
-   npm install -g pm2
-   ```
+## 构建与预览（前端）
 
-2. 启动后端服务：
-   
-   ```bash
-   cd Medication/server
-   pm2 start server.js --name medication-server
-   ```
-
-3. 配置 Nginx 反向代理（可选）：
-   
-   ```nginx
-   server {
-    listen 80;
-    server_name your_domain.com;
-   
-    location / {
-        root /path/to/your/dist;
-        try_files $uri $uri/ /index.html;
-    }
-   
-    location /api {
-        proxy_pass http://localhost:3001;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-   }
-   ```
-
-## 使用说明
-
-1. 启动后端服务（默认端口 3001）
-2. 启动前端开发服务器（默认端口 3000）
-3. 访问 http://localhost:3000 使用应用
+```bash
+npm run build
+npm run preview
+```
 
 ## 数据导入模板
 
-CSV 文件应包含以下列：
+支持 Excel (.xlsx) 和 CSV 格式。
 
-- date (日期，格式：YYYY-MM-DD)
-- medicineName (药品名称)
-- breakfast (早餐用量)
-- lunch (午餐用量)
-- dinner (晚餐用量)
+推荐在页面点击“下载模板”，在模板中补充数据后再导入。表头支持以下字段名（中英文均可）：
 
-## 项目结构
-
-```
-Medication/
-├── src/                    # 前端源代码
-│   ├── components/         # Vue 组件
-│   ├── views/             # 页面视图
-│   │   ├── HomeView.vue    # 首页
-│   │   ├── RecordView.vue  # 用药记录页面
-│   │   ├── AnalysisView.vue# 数据分析页面
-│   │   └── SettingsView.vue# 设置页面
-│   ├── api/               # API 接口
-│   ├── store/             # Pinia 状态管理
-│   ├── router/            # 路由配置
-│   └── App.vue            # 根组件
-├── server/                 # 后端源代码
-│   ├── config/            # 配置文件
-│   │   ├── db.js          # 数据库配置
-│   │   └── init.sql       # 数据库初始化脚本
-│   ├── routes/            # 路由处理
-│   └── server.js          # 服务器入口
-└── README.md              # 项目文档
-```
+- date / 日期（YYYY-MM-DD）
+- medicineName / 药品名称
+- breakfast / 早餐用量
+- lunch / 午餐用量
+- dinner / 晚餐用量
