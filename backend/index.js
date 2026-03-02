@@ -62,8 +62,10 @@ const initializeApp = async () => {
     pool = await createPool()
     console.log('数据库初始化成功')
     
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`)
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`数据库启动在:`)
+      console.log(`  - Local:   http://localhost:${port}`)
+      console.log(`  - Network: http://<your-local-ip>:${port}`)
     })
   } catch (error) {
     console.error('应用启动失败:', error)
