@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import RecordView from '../views/RecordView.vue'
-import AnalysisView from '../views/AnalysisView.vue'
-import SettingsView from '../views/SettingsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,24 +7,27 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/record',
-      name: 'record',
-      component: RecordView
+      component: HomeView,
+      meta: { title: '药品记录' }
     },
     {
       path: '/analysis',
       name: 'analysis',
-      component: AnalysisView
+      component: () => import('../views/AnalysisView.vue'),
+      meta: { title: '数据分析' }
     },
     {
       path: '/settings',
       name: 'settings',
-      component: SettingsView
+      component: () => import('../views/SettingsView.vue'),
+      meta: { title: '设置' }
     }
   ]
 })
 
-export default router 
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title ? `${to.meta.title} - 用药记录管理` : '用药记录管理'
+  next()
+})
+
+export default router

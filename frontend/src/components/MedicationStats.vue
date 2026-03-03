@@ -1,51 +1,90 @@
 <template>
   <div class="stats-container">
-    <a-row :gutter="16">
-      <a-col :span="6">
-        <a-card class="stat-card" :bordered="false">
-          <template #title>今日用药</template>
-          <div class="stat-value">{{ todayStats.total }} 颗</div>
-          <div class="stat-detail">
-            <div>早餐: {{ todayStats.breakfast }} 颗</div>
-            <div>午餐: {{ todayStats.lunch }} 颗</div>
-            <div>晚餐: {{ todayStats.dinner }} 颗</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">今日用药</span>
+          <span class="stat-badge stat-badge--primary">{{ todayStats.total }} 颗</span>
+        </div>
+        <div class="stat-details">
+          <div class="stat-detail-item">
+            <span class="detail-label">早餐</span>
+            <span class="detail-value">{{ todayStats.breakfast }} 颗</span>
           </div>
-        </a-card>
-      </a-col>
-      <a-col :span="6">
-        <a-card class="stat-card" :bordered="false">
-          <template #title>本周用药</template>
-          <div class="stat-value">{{ weekStats.total }} 颗</div>
-          <div class="stat-detail">
-            <div>平均每日: {{ weekStats.average }} 颗</div>
-            <div>最高: {{ weekStats.max }} 颗</div>
-            <div>最低: {{ weekStats.min }} 颗</div>
+          <div class="stat-detail-item">
+            <span class="detail-label">午餐</span>
+            <span class="detail-value">{{ todayStats.lunch }} 颗</span>
           </div>
-        </a-card>
-      </a-col>
-      <a-col :span="6">
-        <a-card class="stat-card" :bordered="false">
-          <template #title>本月用药</template>
-          <div class="stat-value">{{ monthStats.total }} 颗</div>
-          <div class="stat-detail">
-            <div>平均每日: {{ monthStats.average }} 颗</div>
-            <div>最高: {{ monthStats.max }} 颗</div>
-            <div>最低: {{ monthStats.min }} 颗</div>
+          <div class="stat-detail-item">
+            <span class="detail-label">晚餐</span>
+            <span class="detail-value">{{ todayStats.dinner }} 颗</span>
           </div>
-        </a-card>
-      </a-col>
-      <a-col :span="6">
-        <a-card class="stat-card" :bordered="false">
-          <template #title>累计用药</template>
-          <div class="stat-value">{{ totalStats.total }} 颗</div>
-          <div class="stat-detail">
-            <div>累计天数: {{ totalStats.days }} 天</div>
-            <div>日均用量: {{ totalStats.average }} 颗</div>
-            <div>累计种类: {{ totalStats.medicineTypes }} 种</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">本周用药</span>
+          <span class="stat-badge stat-badge--success">{{ weekStats.total }} 颗</span>
+        </div>
+        <div class="stat-details">
+          <div class="stat-detail-item">
+            <span class="detail-label">平均每日</span>
+            <span class="detail-value">{{ weekStats.average }} 颗</span>
           </div>
-        </a-card>
-      </a-col>
-    </a-row>
+          <div class="stat-detail-item">
+            <span class="detail-label">最高</span>
+            <span class="detail-value">{{ weekStats.max }} 颗</span>
+          </div>
+          <div class="stat-detail-item">
+            <span class="detail-label">最低</span>
+            <span class="detail-value">{{ weekStats.min }} 颗</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">本月用药</span>
+          <span class="stat-badge stat-badge--warning">{{ monthStats.total }} 颗</span>
+        </div>
+        <div class="stat-details">
+          <div class="stat-detail-item">
+            <span class="detail-label">平均每日</span>
+            <span class="detail-value">{{ monthStats.average }} 颗</span>
+          </div>
+          <div class="stat-detail-item">
+            <span class="detail-label">最高</span>
+            <span class="detail-value">{{ monthStats.max }} 颗</span>
+          </div>
+          <div class="stat-detail-item">
+            <span class="detail-label">最低</span>
+            <span class="detail-value">{{ monthStats.min }} 颗</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">累计用药</span>
+          <span class="stat-badge stat-badge--info">{{ totalStats.total }} 颗</span>
+        </div>
+        <div class="stat-details">
+          <div class="stat-detail-item">
+            <span class="detail-label">累计天数</span>
+            <span class="detail-value">{{ totalStats.days }} 天</span>
+          </div>
+          <div class="stat-detail-item">
+            <span class="detail-label">日均用量</span>
+            <span class="detail-value">{{ totalStats.average }} 颗</span>
+          </div>
+          <div class="stat-detail-item">
+            <span class="detail-label">累计种类</span>
+            <span class="detail-value">{{ totalStats.medicineTypes }} 种</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -131,7 +170,6 @@ const monthStats = computed(() => {
 })
 
 const totalStats = computed(() => {
-  // 计算所有记录的统计数据
   const dailyTotals = props.data.map(item => 
     item.breakfast + item.lunch + item.dinner
   )
@@ -151,28 +189,93 @@ const totalStats = computed(() => {
 
 <style scoped>
 .stats-container {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-6);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-4);
 }
 
 .stat-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
 }
 
-.stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #1890ff;
-  margin: 8px 0;
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4);
 }
 
-.stat-detail {
-  color: #595959;
-  font-size: 14px;
+.stat-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
 }
 
-.stat-detail div {
-  margin: 4px 0;
+.stat-badge {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: 9999px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
 }
-</style> 
+
+.stat-badge--primary { 
+  background: hsl(var(--primary) / 0.1); 
+  color: var(--color-primary); 
+}
+.stat-badge--success { 
+  background: hsl(142.1 76% 36% / 0.1); 
+  color: var(--color-success); 
+}
+.stat-badge--warning { 
+  background: hsl(38 92% 50% / 0.1); 
+  color: hsl(38 92% 30%);
+}
+.stat-badge--info { 
+  background: hsl(262 83% 58% / 0.1); 
+  color: var(--color-info); 
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.stat-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-1) 0;
+}
+
+.detail-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.detail-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

@@ -8,10 +8,8 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 9500
 
-// 创建数据库连接池
 const createPool = async () => {
   try {
-    // 首先创建基础连接（不指定数据库）
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST || '127.0.0.1',
       port: process.env.DB_PORT || 3306,
@@ -19,15 +17,12 @@ const createPool = async () => {
       password: process.env.DB_PASSWORD || ''
     })
 
-    // 创建数据库（如果不存在）
     await connection.query('CREATE DATABASE IF NOT EXISTS medication_db')
     await connection.query('USE medication_db')
 
-    // 读取并执行初始化SQL
     const initSqlPath = path.join(__dirname, 'config', 'init.sql')
     const initSql = fs.readFileSync(initSqlPath, 'utf8')
     
-    // 分割SQL语句并执行
     const sqlStatements = initSql.split(';').filter(stmt => stmt.trim())
     for (const stmt of sqlStatements) {
       if (stmt.trim()) {
@@ -37,7 +32,6 @@ const createPool = async () => {
 
     await connection.end()
 
-    // 创建连接池
     return mysql.createPool({
       host: process.env.DB_HOST || '127.0.0.1',
       port: process.env.DB_PORT || 3306,
@@ -54,7 +48,6 @@ const createPool = async () => {
   }
 }
 
-// 全局连接池
 let pool
 
 const initializeApp = async () => {
@@ -122,7 +115,6 @@ app.put('/api/daily-summaries/:date', async (req, res) => {
   }
 })
 
-// 获取所有记录
 app.get('/api/records', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM medication_records ORDER BY date DESC')
@@ -133,7 +125,6 @@ app.get('/api/records', async (req, res) => {
   }
 })
 
-// 添加记录
 app.post('/api/records', async (req, res) => {
   const { date, medicineName, breakfast, lunch, dinner } = req.body
   try {
@@ -148,7 +139,6 @@ app.post('/api/records', async (req, res) => {
   }
 })
 
-// 更新记录
 app.put('/api/records/:id', async (req, res) => {
   const { id } = req.params
   const { date, medicineName, breakfast, lunch, dinner } = req.body
@@ -164,7 +154,6 @@ app.put('/api/records/:id', async (req, res) => {
   }
 })
 
-// 删除记录
 app.delete('/api/records/:id', async (req, res) => {
   const { id } = req.params
   try {
@@ -176,5 +165,53 @@ app.delete('/api/records/:id', async (req, res) => {
   }
 })
 
-// 启动应用
+app.delete('/api/records/batch', async (req, res) => {
+  const { ids } = req.body
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    res.status(400).json({ error: 'ids 不能为空' })
+    return
+  }
+  try {
+    const placeholders = ids.map(() => '?').join(',')
+    await pool.query(`DELETE FROM medication_records WHERE id IN (${placeholders})`, ids)
+    res.json({ success: true, deletedCount: ids.length })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: '批量删除失败' })
+  }
+})
+
+app.get('/api/stats/overview', async (req, res) => {
+  try {
+    const [records] = await pool.query('SELECT * FROM medication_records')
+    
+    const totalRecords = records.length
+    const totalDosage = records.reduce((sum, r) => sum + r.breakfast + r.lunch + r.dinner, 0)
+    
+    const dates = [...new Set(records.map(r => r.date.toISOString().split('T')[0]))]
+    const uniqueDates = dates.length
+    const avgDosage = uniqueDates > 0 ? Math.round(totalDosage / uniqueDates) : 0
+    
+    const medicineStats = {}
+    records.forEach(r => {
+      if (!medicineStats[r.medicine_name]) {
+        medicineStats[r.medicine_name] = { name: r.medicine_name, total: 0, count: 0 }
+      }
+      medicineStats[r.medicine_name].total += r.breakfast + r.lunch + r.dinner
+      medicineStats[r.medicine_name].count++
+    })
+    
+    res.json({
+      totalRecords,
+      totalDosage,
+      uniqueDates,
+      avgDosage,
+      medicineStats: Object.values(medicineStats).sort((a, b) => b.total - a.total)
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: '获取统计概览失败' })
+  }
+})
+
 initializeApp()
