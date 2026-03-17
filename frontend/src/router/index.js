@@ -17,6 +17,12 @@ const router = createRouter({
       meta: { title: '数据分析' }
     },
     {
+      path: '/purchase',
+      name: 'purchase',
+      component: () => import('../views/PurchaseView.vue'),
+      meta: { title: '购买记录' }
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => import('../views/SettingsView.vue'),

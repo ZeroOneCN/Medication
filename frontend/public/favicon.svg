@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="pillGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <circle cx="50" cy="50" r="48" fill="url(#bgGradient)"/>
+  
+  <!-- 药丸形状 -->
+  <g transform="translate(50,50) rotate(-45) translate(-50,-50)">
+    <!-- 药丸下半部分 -->
+    <path d="M 30 50 L 30 65 A 15 15 0 0 0 70 65 L 70 50 Z" fill="#ffffff" opacity="0.9"/>
+    <!-- 药丸上半部分 -->
+    <path d="M 30 50 L 30 35 A 15 15 0 0 1 70 35 L 70 50 Z" fill="url(#pillGradient)"/>
+    <!-- 药丸轮廓 -->
+    <rect x="30" y="35" width="40" height="30" rx="15" ry="15" fill="none" stroke="#ffffff" stroke-width="2"/>
+  </g>
+  
+  <!-- 十字医疗标志 -->
+  <g transform="translate(50,50)">
+    <rect x="-4" y="-14" width="8" height="28" rx="3" fill="#ffffff" opacity="0.8"/>
+    <rect x="-14" y="-4" width="28" height="8" rx="3" fill="#ffffff" opacity="0.8"/>
+  </g>
+</svg>

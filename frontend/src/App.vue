@@ -35,16 +35,18 @@
 
 <script setup>
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { 
-  MedicineBoxOutlined, 
-  HomeOutlined, 
-  BarChartOutlined, 
-  SettingOutlined
+import {
+  MedicineBoxOutlined,
+  HomeOutlined,
+  BarChartOutlined,
+  SettingOutlined,
+  ShoppingCartOutlined
 } from '@ant-design/icons-vue'
 
 const navItems = [
   { key: 'home', label: '首页', path: '/', icon: HomeOutlined },
   { key: 'analysis', label: '数据分析', path: '/analysis', icon: BarChartOutlined },
+  { key: 'purchase', label: '购买记录', path: '/purchase', icon: ShoppingCartOutlined },
   { key: 'settings', label: '设置', path: '/settings', icon: SettingOutlined }
 ]
 </script>
